@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+:root {
+  --primary: 0 100% 50%;
+  --secondary: 280 100% 50%;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300;
+}
+
+/* Mapbox overrides */
+.mapboxgl-canvas {
+  @apply rounded-lg;
+}
+
+.mapboxgl-popup-content {
+  @apply bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg shadow-lg;
+}
+
+.mapboxgl-popup-close-button {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 dark:bg-slate-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full hover:bg-slate-400 dark:hover:bg-slate-500;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  -100% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(255, 255, 255, 0.3) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* Marker pulse animation */
+@keyframes marker-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.marker-pulse {
+  animation: marker-pulse 2s ease-in-out infinite;
+}
+
+/* Live location blue dot */
+.live-dot {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.live-dot-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
+  border-radius: 50%;
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  animation: live-ring-pulse 2s ease-out infinite;
+}
+
+@keyframes live-ring-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Glass morphism effect */
+.glass-effect {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-white/20 dark:border-slate-700/20;
+}
+
+/* Responsive grid */
+@screen sm {
+  .grid-responsive {
+    @apply grid-cols-1;
+  }
+}
+
+@screen md {
+  .grid-responsive {
+    @apply grid-cols-2;
+  }
+}
+
+@screen lg {
+  .grid-responsive {
+    @apply grid-cols-3;
+  }
+}
+
+/* Elevation system */
+.elevation-1 {
+  @apply shadow-md;
+}
+
+.elevation-2 {
+  @apply shadow-lg;
+}
+
+.elevation-3 {
+  @apply shadow-2xl;
+}
+
+/* Typography */
+.text-headline {
+  @apply text-3xl md:text-4xl font-bold tracking-tight;
+}
+
+.text-title {
+  @apply text-xl md:text-2xl font-semibold;
+}
+
+.text-body {
+  @apply text-base md:text-lg font-normal leading-relaxed;
+}
+
+.text-caption {
+  @apply text-xs md:text-sm font-medium text-slate-600 dark:text-slate-400;
+}
