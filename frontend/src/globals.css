@@ -180,3 +180,19 @@ body {
 .text-caption {
   @apply text-xs md:text-sm font-medium text-slate-600 dark:text-slate-400;
 }
+
+/* PWA Install Banner Animation */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out;
+}
