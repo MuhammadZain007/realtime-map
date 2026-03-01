@@ -4,9 +4,8 @@ import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { authAPI } from '../../src/lib/api';
+import { signIn } from '../../src/lib/supabase';
 import { useAppStore } from '../../src/stores/appStore';
-import { getErrorMessage } from '../../src/utils/format';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,17 +19,21 @@ export default function LoginPage() {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await authAPI.login({ email, password });
-      const { user, token } = response.data.data;
+      const data = await signIn(email, password);
 
-      localStorage.setItem('token', token);
-      setToken(token);
-      setUser(user);
+      localStorage.setItem('token', data.session.access_token);
+      setToken(data.session.access_token);
+      setUser({
+        id: data.user.id,
+        email: data.user.email || email,
+        full_name: data.user.user_metadata?.full_name || email.split('@')[0],
+        role: 'user',
+      });
 
-      toast.success('Welcome back');
+      toast.success('Welcome back!');
       router.push('/dashboard');
-    } catch (error) {
-      toast.error(getErrorMessage(error));
+    } catch (error: any) {
+      toast.error(error.message || 'Login failed');
     } finally {
       setLoading(false);
     }

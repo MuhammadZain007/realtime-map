@@ -4,9 +4,8 @@ import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { authAPI } from '../../src/lib/api';
+import { signUp } from '../../src/lib/supabase';
 import { useAppStore } from '../../src/stores/appStore';
-import { getErrorMessage } from '../../src/utils/format';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -21,21 +20,25 @@ export default function RegisterPage() {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await authAPI.register({
-        full_name: fullName,
-        email,
-        password,
-      });
-      const { user, token } = response.data.data;
+      const data = await signUp(email, password, fullName);
 
-      localStorage.setItem('token', token);
-      setToken(token);
-      setUser(user);
-
-      toast.success('Account created');
-      router.push('/dashboard');
-    } catch (error) {
-      toast.error(getErrorMessage(error));
+      if (data.session) {
+        localStorage.setItem('token', data.session.access_token);
+        setToken(data.session.access_token);
+        setUser({
+          id: data.user?.id || '',
+          email: data.user?.email || email,
+          full_name: fullName,
+          role: 'user',
+        });
+        toast.success('Account created!');
+        router.push('/dashboard');
+      } else {
+        toast.success('Account created! Check your email to confirm.');
+        router.push('/login');
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
