@@ -3,10 +3,11 @@
 import { Toaster } from 'react-hot-toast';
 import InstallPWA from './InstallPWA';
 import NetworkStatus from './NetworkStatus';
+import AuthProvider from './AuthProvider';
 
-export default function Providers() {
+export default function Providers({ children }: { children?: React.ReactNode }) {
   return (
-    <>
+    <AuthProvider>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -16,6 +17,7 @@ export default function Providers() {
       />
       <NetworkStatus />
       <InstallPWA />
-    </>
+      {children}
+    </AuthProvider>
   );
 }

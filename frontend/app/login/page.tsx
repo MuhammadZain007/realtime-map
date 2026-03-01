@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -9,11 +9,17 @@ import { useAppStore } from '../../src/stores/appStore';
 
 export default function LoginPage() {
   const router = useRouter();
+  const isAuthenticated = useAppStore((state) => state.isAuthenticated);
   const setUser = useAppStore((state) => state.setUser);
   const setToken = useAppStore((state) => state.setToken);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) router.replace('/dashboard');
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -101,6 +101,9 @@ export const useAppStore = create<AppStore>()(
     {
       name: 'app-store',
       partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
         theme: state.theme,
         enableNotifications: state.enableNotifications,
         batteryOptimization: state.batteryOptimization,
